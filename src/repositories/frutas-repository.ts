@@ -66,3 +66,8 @@ let bancoFrutas: frutas[] = [
 export const listarFrutas = async() => {
     return bancoFrutas;
 };
+
+export const listarFrutasById = async(id:number): Promise<frutas | undefined> => {
+    return bancoFrutas.find( player => player.id === id);
+    
+};

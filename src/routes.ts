@@ -20,6 +20,7 @@ const router = Router();
 // e envia para quem fez a requisição.
 router.get('/frutas', frutasController.getFrutas);
 
+router.get('/frutas/:id', frutasController.getFrutasById);
 
 // EXPORTA O ROUTER PARA SER UTILIZADO NO app.ts
 // O app.ts importa esse arquivo e conecta as rotas através:
