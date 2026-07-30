@@ -71,3 +71,19 @@ export const listarFrutasById = async(id:number): Promise<frutas | undefined> =>
     return bancoFrutas.find( player => player.id === id);
     
 };
+
+export const inserirFruta = async(fruta: frutas) => {
+    bancoFrutas.push(fruta);
+};
+
+export const deleteFruta = async(id:number) => {
+    const index = bancoFrutas.findIndex (f => f.id === id);
+
+    if(index === -1){
+        return false;
+    };
+
+    bancoFrutas.splice(index, 1);
+
+    return true;
+};

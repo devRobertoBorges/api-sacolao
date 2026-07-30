@@ -19,3 +19,21 @@ export const notFound = async (): Promise <httpResponse> => {
             }
     };
 };
+
+export const created = async (): Promise<httpResponse> => {
+    return {
+        statusCode:201,
+        body: {
+            message: "successful"
+        }
+    };
+};
+
+export const  serverError = async (): Promise<httpResponse> => {
+    return {
+        statusCode: 500,
+        body: {
+            message: "serverError"
+        }
+    };
+};

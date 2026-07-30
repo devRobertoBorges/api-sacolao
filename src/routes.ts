@@ -22,6 +22,9 @@ router.get('/frutas', frutasController.getFrutas);
 
 router.get('/frutas/:id', frutasController.getFrutasById);
 
+router.post('/frutas', frutasController.postFruta);
+
+router.delete('/frutas/:id', frutasController.deleteFruta);
 // EXPORTA O ROUTER PARA SER UTILIZADO NO app.ts
 // O app.ts importa esse arquivo e conecta as rotas através:
 //
