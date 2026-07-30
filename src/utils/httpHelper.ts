@@ -24,7 +24,7 @@ export const created = async (): Promise<httpResponse> => {
     return {
         statusCode:201,
         body: {
-            message: "successful"
+            message: "created"
         }
     };
 };
