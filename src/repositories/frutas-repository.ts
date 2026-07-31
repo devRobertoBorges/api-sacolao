@@ -1,4 +1,8 @@
-import { frutas } from "../models/frutas-model";
+import { frutas, frutasSql } from "../models/frutas-model";
+
+import { ResultSetHeader } from "mysql2";
+
+import { connection } from "../database/connection";
 
 let bancoFrutas: frutas[] = [
     {
@@ -63,8 +67,12 @@ let bancoFrutas: frutas[] = [
     }
 ];
 
-export const listarFrutas = async() => {
-    return bancoFrutas;
+export const listarFrutasSql = async () => {
+    const [rows] = await connection.query<frutasSql[]>(
+        "SELECT * FROM frutas"
+    );
+
+    return rows;
 };
 
 export const listarFrutasById = async(id:number): Promise<frutas | undefined> => {

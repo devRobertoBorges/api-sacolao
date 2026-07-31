@@ -7,7 +7,7 @@ export const getFrutas = async (req: Request, res: Response) => {
     const httpResponse = await services.getFrutasServices();
     
 
-    return res.status(200).json(httpResponse);
+    return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
 
 export const getFrutasById = async(req: Request, res: Response) => {
@@ -15,7 +15,7 @@ export const getFrutasById = async(req: Request, res: Response) => {
     
     const httpResponse = await services.getFrutasByIdServices(id);
 
-    return res.status(200).json(httpResponse);
+    return res.status(httpResponse.statusCode).json(httpResponse.body);
 };
 
 export const postFruta = async(req: Request, res: Response) => {
@@ -24,7 +24,7 @@ export const postFruta = async(req: Request, res: Response) => {
     const httpResponse = await services.createFrutasServices(bodyValue);
 
     if (httpResponse){
-        return res.status(200).json(httpResponse);
+        return res.status(httpResponse.statusCode).json(httpResponse.body);
     }
 };
 

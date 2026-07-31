@@ -4,17 +4,21 @@ import { frutas } from "../models/frutas-model";
 
 export const  getFrutasServices = async () => {
     try {
-        const data = await FrutasRepository.listarFrutas();
+        const dataFrutas = await FrutasRepository.listarFrutasSql();
 
         let response = null;
 
-        if(data){
-            response = await HttpResponse.ok(data);
+        if(dataFrutas){
+            response = await HttpResponse.ok(dataFrutas);
         }else {
-            response = await HttpResponse.notFound();
-        }
+            response = {
+                statusCode: 404,
+                body: null,
+                message: "not found"
+            }
+        };
 
-        return data;
+        return response;
 
     } catch(erro) {
         console.error(erro);
@@ -37,7 +41,7 @@ export const getFrutasByIdServices = async (id:number) => {
             response = HttpResponse.notFound();
         };
 
-        return data;
+        return response;
 
     } catch(erro){
         console.error(erro);
