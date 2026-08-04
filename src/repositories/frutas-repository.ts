@@ -4,68 +4,6 @@ import { ResultSetHeader } from "mysql2";
 
 import { connection } from "../database/connection";
 
-let bancoFrutas: frutas[] = [
-    {
-        id: 1,
-        nome: "Mamão",
-        preco: 5.45,
-        quantidade: 2
-    },
-    {
-        id: 2,
-        nome: "Maçã",
-        preco: 6.99,
-        quantidade: 10
-    },
-    {
-        id: 3,
-        nome: "Banana",
-        preco: 3.99,
-        quantidade: 25
-    },
-    {
-        id: 4,
-        nome: "Laranja",
-        preco: 4.50,
-        quantidade: 18
-    },
-    {
-        id: 5,
-        nome: "Uva",
-        preco: 12.90,
-        quantidade: 8
-    },
-    {
-        id: 6,
-        nome: "Abacaxi",
-        preco: 7.80,
-        quantidade: 5
-    },
-    {
-        id: 7,
-        nome: "Manga",
-        preco: 8.25,
-        quantidade: 12
-    },
-    {
-        id: 8,
-        nome: "Pera",
-        preco: 9.50,
-        quantidade: 7
-    },
-    {
-        id: 9,
-        nome: "Melancia",
-        preco: 19.90,
-        quantidade: 3
-    },
-    {
-        id: 10,
-        nome: "Morango",
-        preco: 14.99,
-        quantidade: 15
-    }
-];
 
 export const listarFrutasSql = async () => {
     const [rows] = await connection.query<frutasSql[]>(
@@ -76,22 +14,38 @@ export const listarFrutasSql = async () => {
 };
 
 export const listarFrutasById = async(id:number): Promise<frutas | undefined> => {
-    return bancoFrutas.find( player => player.id === id);
+    const [rows] = await connection.query<frutasSql[]>(
+        "SELECT * FROM frutas WHERE id = ?",
+        [id]
+    );
     
+    return rows[0];
 };
 
 export const inserirFruta = async(fruta: frutas) => {
-    bancoFrutas.push(fruta);
+    const [result] = await connection.query<ResultSetHeader>(
+        "INSERT INTO frutas (nome, preco, quantidade) VALUES (?,?,?)",
+        [fruta.nome, fruta.preco, fruta.quantidade]
+    );
+
+    return result.insertId;
 };
 
 export const deleteFruta = async(id:number) => {
-    const index = bancoFrutas.findIndex (f => f.id === id);
+    const [result] = await connection.query<ResultSetHeader>(
+        "DELETE FROM frutas WHERE id = ?",
+        [id]
+    );
 
-    if(index === -1){
-        return false;
-    };
+    return result.affectedRows > 0;
+};
 
-    bancoFrutas.splice(index, 1);
+export const updateFruta = async(id:number, fruta:frutas) => {
+    const [result] = await connection.query<ResultSetHeader>(
+        "UPDATE frutas SET nome = ?, preco = ?, quantidade = ? WHERE ID = ?",
 
-    return true;
+        [fruta.nome, fruta.preco, fruta.quantidade, id]
+    );
+
+    return result.affectedRows > 0;
 };

@@ -31,6 +31,9 @@ export const getFrutasByIdServices = async (id:number) => {
 
     try {
         
+        if (!Number.isInteger(id) || id <= 0) {
+            return await HttpResponse.notFound();
+        }
         const data =  await FrutasRepository.listarFrutasById(id);
 
         let response = null;
@@ -50,27 +53,45 @@ export const getFrutasByIdServices = async (id:number) => {
     };
 };
 
-export const createFrutasServices = async(fruta: frutas) => {
+export const createFrutasServices = async (fruta: frutas) => {
 
     try {
-        
-        let response = null;
-        
-        if (Object.keys(fruta).length !== 0){
-            await FrutasRepository.inserirFruta(fruta);
 
-            response = await HttpResponse.created();
-        }else {
-            response = await HttpResponse.notFound();
-        };
+        if (!fruta) {
+            return await HttpResponse.badRequest("Informe os dados da fruta");
+        }
 
-        return response;
+        if (
+            typeof fruta.nome !== "string" ||
+            fruta.nome.trim() === "" ||
+            !isNaN(Number(fruta.nome))
+        ) {
+            return await HttpResponse.badRequest("Informe um nome válido");
+        }
 
-    } catch(erro){
+        if (
+            typeof fruta.preco !== "number" ||
+            fruta.preco < 0
+        ) {
+            return await HttpResponse.badRequest("Preço inválido");
+        }
+
+        if (
+            typeof fruta.quantidade !== "number" ||
+            fruta.quantidade < 0
+        ) {
+            return await HttpResponse.badRequest("Quantidade inválida");
+        }
+
+        await FrutasRepository.inserirFruta(fruta);
+
+        return await HttpResponse.created();
+
+    } catch (erro) {
         console.error(erro);
 
         return await HttpResponse.serverError();
-    };
+    }
 };
 
 export const deleteFrutasService = async(id: number) => {
@@ -88,4 +109,35 @@ export const deleteFrutasService = async(id: number) => {
 
         return await HttpResponse.serverError();
     };
+};
+
+export const updateFrutaService = async(id:number, fruta:frutas) => {
+
+    try{
+
+        if(typeof fruta.nome !== "string" || fruta.nome.trim() === ""){
+            return await HttpResponse.badRequest('Informe um nome válido');
+        };
+
+        if (typeof fruta.preco !== "number" || fruta.preco < 0) {
+            return await HttpResponse.badRequest("Preço inválido.");
+        };
+
+        if (typeof fruta.quantidade !== "number" || fruta.quantidade < 0) {
+            return await HttpResponse.badRequest("Quantidade inválida.");
+        };
+
+        const updated = await FrutasRepository.updateFruta(id, fruta);
+
+        if (!updated){
+            return await HttpResponse.badRequest('Credenciais invalidas');
+        }else{
+            return await HttpResponse.ok({message: "updated"})
+        };
+    } catch(erro){
+        console.error(erro);
+
+        return await HttpResponse.serverError();
+    };
+
 };

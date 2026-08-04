@@ -29,11 +29,20 @@ export const created = async (): Promise<httpResponse> => {
     };
 };
 
-export const  serverError = async (): Promise<httpResponse> => {
+export const serverError = async (): Promise<httpResponse> => {
     return {
         statusCode: 500,
         body: {
             message: "serverError"
+        }
+    };
+};
+
+export const badRequest = async(message: string): Promise<httpResponse> => {
+    return {
+        statusCode:400,
+        body: {
+            message
         }
     };
 };
