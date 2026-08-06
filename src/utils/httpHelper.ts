@@ -20,12 +20,10 @@ export const notFound = async (): Promise <httpResponse> => {
     };
 };
 
-export const created = async (): Promise<httpResponse> => {
+export const created = async (data?: any): Promise<httpResponse> => {
     return {
-        statusCode:201,
-        body: {
-            message: "created"
-        }
+        statusCode: 201,
+        body: data ?? { message: "created" }
     };
 };
 

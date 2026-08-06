@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import * as frutasController from "./controllers/frutas-controllers"
 
+import * as vendasController from "./controllers/vendas-controller";
 // CRIA UM SISTEMA DE ROTAS DO EXPRESS
 // O Router permite organizar as rotas da aplicação
 // separando elas do arquivo principal (app.ts/server.ts).
@@ -27,6 +28,10 @@ router.post('/frutas', frutasController.postFruta);
 router.delete('/frutas/:id', frutasController.deleteFruta);
 
 router.put('/frutas/:id', frutasController.updatedFruta);
+
+router.post('/vendas', vendasController.postVenda);
+
+router.get('/vendas', vendasController.listarVendas);
 // EXPORTA O ROUTER PARA SER UTILIZADO NO app.ts
 // O app.ts importa esse arquivo e conecta as rotas através:
 //
